@@ -1,0 +1,68 @@
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
+
+// Define a struct to represent data with priority
+class Patientinfo {
+public:
+    string patient;
+    int priority;
+    Patientinfo(string n, int a) : patient(n), priority(a) {}
+    void display() {
+        cout << "Patient Name: " << patient << ", Seriousness of their condition: " << priority << endl;
+    }
+};
+
+int main() {
+    int menu;
+    vector<Patientinfo> patientQueue;
+
+    while (true) {
+        cout << "\n1.\tAdd a new patient\n"
+             << "2.\tCall the next patient (Delete)\n"
+             << "3.\tPrint the current Queue of patients\n"
+             << "4.\tExit:" << endl;
+
+        cin >> menu;
+
+        if (menu == 1) {
+            string patient;
+            int priority;
+            cout << "\nPlease Enter the patient name:" << endl;
+            cin.ignore(); // to consume the newline character left in the buffer
+            getline(cin, patient);
+            do {
+                cout << "\nPlease enter the severity of their condition (between 1 and 5):" << endl;
+                cin >> priority;
+            } while (priority < 1 || priority > 5);
+            Patientinfo obj(patient, priority);
+            patientQueue.push_back(obj);
+            cout << "Patient added to the queue." << endl;
+        }
+        else if (menu == 2) {
+            if (!patientQueue.empty()) {
+                cout << "Calling the next patient: ";
+                patientQueue.front().display();
+                patientQueue.erase(patientQueue.begin());
+            } else {
+                cout << "Patient queue is empty." << endl;
+            }
+        }
+        else if (menu == 3) {
+            cout << "Current Queue of patients:" << endl;
+            for (Patientinfo patient : patientQueue) {
+                patient.display();
+            }
+        }
+        else if (menu == 4) {
+            cout << "Exiting the program." << endl;
+            break; // Exit the infinite loop
+        }
+        else {
+            cout << "Invalid option. Please choose again." << endl;
+        }
+    }
+
+    return 0;
+}
